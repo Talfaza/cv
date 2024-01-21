@@ -21,7 +21,7 @@ if(isset($_POST['submit'])) {
       $country = $_POST['country'];
       $experience = $_POST['experience'];
       
-      $stmt = $connection->prepare("INSERT INTO CV.INFORMATION (FIRSTNAME, LASTNAME, PHONE, EMAIL, EDUCATION, SKILL1, SKILL2, SKILL3, GENDER, ADRESSE, COUNTRY, EXPERIENCE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $stmt = $connection->prepare("INSERT INTO CV.INFORMATION (FIRSTNAME, LASTNAME, PHONE, EMAIL, EDUCATION, SKILL1, SKILL2, SKILL3, GENDER, ADRESSE, COUNTRY, EXPERIENCE) (country_code,country_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       $stmt->bind_param("ssssssssisss", $firstname, $lastname, $phone, $email, $education, $skill_1, $skill_2, $skill_3, $gender, $adress, $country, $experience);
       if ($stmt->execute()) {
             session_start();
