@@ -40,10 +40,10 @@ $queryPersonal = "CREATE TABLE IF NOT EXISTS PERSONAL (
 
 )";
 $queryGender = "CREATE TABLE IF NOT EXISTS GENDER (
-      id INT(6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      MALE BOOLEAN NOT NULL,
-      FEMALE BOOLEAN NOT NULL
-)";
+      id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+      Gende BOOLEAN NOT NULL
+  )
+  ";
 $queryCountry = "CREATE TABLE IF NOT EXISTS COUNTRY (
       id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
       country_code varchar(2) NOT NULL,
@@ -80,12 +80,23 @@ mysqli_select_db($conn,$dbName);
 
 
 
+
 mysqli_query($conn, $querySkill) ? print("Table Skill created successfully" . '<br>') : die("Connection failed for Skill: " . mysqli_error($conn));
 mysqli_query($conn, $queryPersonal) ? print("Table Personal created successfully" . '<br>') : die("Connection failed for Personal: " . mysqli_error($conn));
 mysqli_query($conn, $queryGender) ? print("Table Gender created successfully" . '<br>') : die("Connection failed for Gender: " . mysqli_error($conn));
-mysqli_query($conn, $queryCountry) ? include_once("inserCountry.php") : die("Connection failed for Country: " . mysqli_error($conn));
+mysqli_query($conn, $queryCountry) ? checkAndInsertCountry() : die("Connection failed for Country: " . mysqli_error($conn));
 print("Table Country created successfully" . '<br>');
 mysqli_query($conn, $queryLang) ? print("Table Lang created successfully" . '<br>') : die("Connection failed for Lang: " . mysqli_error($conn));
 mysqli_query($conn, $queryInfo) ? print("Table Info created successfully" . '<br>') : die("Connection failed for Info: " . mysqli_error($conn));
 
-?>
+function checkAndInsertCountry()
+{
+    global $conn;
+    $result = mysqli_query($conn, "SELECT COUNT(*) as count FROM COUNTRY");
+    $row = mysqli_fetch_assoc($result);
+    $rowCount = $row['count'];
+
+    if ($rowCount == 0) {
+        include_once("inserCountry.php");
+    }
+}

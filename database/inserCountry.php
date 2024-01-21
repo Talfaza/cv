@@ -1,5 +1,9 @@
 <?php 
 
+
+
+
+
 $servername="localhost";
 $username="root";
 $password="";
@@ -267,16 +271,16 @@ $arr = array(
 $queryClearData = "DELETE FROM COUNTRY";
 $conn->query($queryClearData);
 
-foreach ($arr as $countryCode => $countryName) {
-    $queryInsertCountry = "INSERT INTO COUNTRY (country_code, country_name) VALUES (?, ?)";
-    $stmt = $conn->prepare($queryInsertCountry);
+$queryInsertCountry = "INSERT INTO COUNTRY (country_code, country_name) VALUES (?, ?)";
+$stmt = $conn->prepare($queryInsertCountry);
 
-    // Bind parameters and execute the statement
+foreach ($arr as $countryCode => $countryName) {
     $stmt->bind_param("ss", $countryCode, $countryName);
     $stmt->execute();
-
-    // Close the statement
-    $stmt->close();
 }
 
-?>
+// Close the statement
+$stmt->close();
+
+// Close the database connection
+

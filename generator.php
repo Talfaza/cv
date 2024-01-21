@@ -1,4 +1,11 @@
+<?php
 
+ob_start();
+
+include_once "database/database.php";
+ob_end_clean();
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,8 +66,22 @@
                         <input name="adresse" class="input is-info" placeholder="Link textarea">
 
                         <br><br><label for="">Country :</label>
-                        <input name="country" class="input is-info" placeholder="Link textarea">
+                        <div class="select is-fullwidth">
+                        <select name="country">
 
+                        <?php
+                            // Assuming $conn is your database connection
+                            $query = "SELECT * FROM CV.COUNTRY";
+                            $result = mysqli_query($conn, $query);
+
+                            // Fetch and print countries as options
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo "<option value='{$row['id']}'>{$row['country_name']}</option>";
+                            }
+                            ?>
+                          
+                        </select>
+                    </div>
                         <br><br><label for="">Experience :</label>
                         <textarea name="experience" class="textarea is-info " placeholder="Link textarea"></textarea><br>
                         <input class="button is-info is-centered" name="submit" type="submit" value="Generate">

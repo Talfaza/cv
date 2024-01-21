@@ -1,17 +1,42 @@
-<?php session_start();?>
+<?php session_start();
 
-<?php 
+ob_start();
 
+include_once "database/database.php";
+ob_end_clean();
 
+$countryId = $_SESSION['country'];
+$personalId = $_SESSION['personal'];
+$skillId = $_SESSION['skill'];
+$genderQuery = "SELECT Gende FROM GENDER";
+$result = mysqli_query($conn, $genderQuery);
 
-function gender(){
-      if ($_SESSION['gender'] == 1) {
-            return "Male";
-      } else {
-            return "Female";
-      }
+function gender($result) {
+    $row = mysqli_fetch_assoc($result);
 
+    if (isset($row['Gende']) && $row['Gende'] == 1) {
+        return "Male";
+    } else {
+        return "Female";
+    }
 }
+
+$queryCountrySelect = "SELECT * FROM CV.COUNTRY WHERE id = $countryId";
+$countryResult  = mysqli_query($conn, $queryCountrySelect);
+$row = mysqli_fetch_assoc($countryResult);
+
+$queryPersonalSelect = "SELECT * FROM CV.PERSONAL WHERE id = $personalId";
+$personalResult = mysqli_query($conn, $queryPersonalSelect);
+$rowPersonal = mysqli_fetch_assoc($personalResult);
+
+$querySkillSelect = "SELECT * FROM CV.SKILL WHERE id = $skillId";
+$skillResult = mysqli_query($conn, $querySkillSelect);
+$rowSkill = mysqli_fetch_assoc($skillResult);
+
+
+
+
+  
 
 ?>
 
@@ -40,45 +65,49 @@ function gender(){
                 <img class="is-rounded" src="img/pfp.jpg">
             </figure>
 
-            <br><br><br><i class="fa-solid fa-user fa-sm"></i>
+            <br><br><i class="fa-solid fa-user fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">First name :</h1>
-            <?php echo $_SESSION['firstname'];?>
+            <?php echo $rowPersonal['FIRSTNAME'];?>
 
             <br><br><i class="fa-solid fa-user fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Last name :</h1>
-            <?php echo $_SESSION['lastname'];?>
+            <?php echo $rowPersonal['LASTNAME'];?>
 
             <br><br><i class="fa-solid fa-phone fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Phone :</h1>
-            <?php echo $_SESSION['phone'];?>
+            <?php echo $rowPersonal['PHONE'];?>
 
             <br><br><i class="fa-solid fa-envelope fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Email :</h1>
-            <?php echo $_SESSION['email'];?>
+            <?php echo $rowPersonal['EMAIL'];?>
 
             <br><br><i class="fa-solid fa-book fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Education :</h1>
-            <?php echo $_SESSION['education'];?>
+            <?php echo $rowPersonal['EDUCATION'];?>
+
+            <br><br><i class="fa-solid fa-lightbulb fa-sm"></i>
+            <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Experience :</h1>
+            <?php echo $rowPersonal['EXPERIENCE'];?>
 
             <br><br><i class="fa-solid fa-gear fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Skill 1 :</h1>
-            <?php echo $_SESSION['skill_1'];?>
+            <?php echo $rowSkill['SKILL1'];?>
             <br><br><i class="fa-solid fa-gear fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Skill 2 :</h1>
-            <?php echo $_SESSION['skill_2'];?>
+            <?php echo $rowSkill['SKILL2'];?>
             <br><br><i class="fa-solid fa-gear fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Skill 3 :</h1>
-            <?php echo $_SESSION['skill_3'];?>
+            <?php echo $rowSkill['SKILL3'];?>
             
             <br><br><i class="fa-solid fa-venus-mars fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Gender :</h1>
-            <?php echo gender();?>
+            <?php echo gender($result);?>
             
 
 
             <br><br><i class="fa-solid fa-globe fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Country :</h1>
-            <?php echo $_SESSION['country'];?>
+            <?php echo $row['country_name'];?>
 
             <br><br><i class="fa-solid fa-lightbulb fa-sm"></i>
             <h1 class="title is-5" style="display: inline-block; margin-left: 10px;">Experience :</h1>
@@ -88,7 +117,7 @@ function gender(){
 
 
         </div>
-        <div class="column"></div>
+        <div class="col umn"></div>
         <div class="column"></div>
         <br><br>
     </div>
